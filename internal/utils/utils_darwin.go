@@ -1,5 +1,4 @@
-// +build !windows
-
+// +build darwin
 /*
  * GML - Go QML
  *
@@ -29,8 +28,13 @@
 
 package utils
 
-import "syscall"
+import (
+	"syscall"
+
+	"golang.org/x/sys/unix"
+)
 
 func GetThreadID() int {
-	return syscall.Gettid()
+	tid, _, _ := syscall.Syscall(unix.SYS_THREAD_SELFID, 0, 0, 0)
+	return int(tid)
 }
